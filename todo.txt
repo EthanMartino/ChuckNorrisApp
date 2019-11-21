@@ -1,0 +1,5 @@
+-Prevent multiple clicks of button
+-Show loading image while waiting
+-Display all joke data
+-Display Categories
+-Let user get joke in specific category
