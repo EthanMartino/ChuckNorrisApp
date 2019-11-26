@@ -41,6 +41,22 @@ function fetchJoke():void{
     request.send();
 }
 
+function isCategorySelected():boolean{
+    let selIndex = (<HTMLSelectElement>document.getElementById("cat-list")).selectedIndex;
+    if(selIndex == 0){
+        return false;
+    }
+    return true;
+}
+
+/**
+ * Returns the category that is selected
+ */
+function getSelectedCategory():string{
+    let selIndex = (<HTMLSelectElement>document.getElementById("cat-list")).selectedIndex;
+    return "";
+}
+
 function handleJokeResponse():void{
     let request = <XMLHttpRequest>this;
 
@@ -100,16 +116,27 @@ function displayJoke(j:ChuckNorrisJoke):void{
 /**
  * Displays categories in a drop down list
  */
-function populateCategories(){
+function populateCategories():void{
     let request = new XMLHttpRequest();
     request.open("GET", "https://api.icndb.com/categories");
 
     request.onreadystatechange = function(){
+        //Request finished   (4) successfully    (200)
         if(this.readyState == 4 && this.status == 200){
             let categories:string[] = JSON.parse(this.responseText).value;
             console.log(categories);
+            populateCatDropdown(categories);
         }
     }
     
     request.send();
+}
+
+function populateCatDropdown(categories:string[]):void{
+    let dropDown = <HTMLSelectElement>document.getElementById("cat-list");
+    for(let i = 0; i < categories.length; i++){
+        let currOption = <HTMLOptionElement>document.createElement("option");
+        currOption.text = categories[i];
+        dropDown.appendChild(currOption);
+    }
 }

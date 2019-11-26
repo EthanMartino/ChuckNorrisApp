@@ -23,6 +23,20 @@ function fetchJoke() {
     //Initiate request
     request.send();
 }
+function isCategorySelected() {
+    var selIndex = document.getElementById("cat-list").selectedIndex;
+    if (selIndex == 0) {
+        return false;
+    }
+    return true;
+}
+/**
+ * Returns the category that is selected
+ */
+function getSelectedCategory() {
+    var selIndex = document.getElementById("cat-list").selectedIndex;
+    return "";
+}
 function handleJokeResponse() {
     var request = this;
     //readyState 4 means requesst is finished
@@ -76,10 +90,20 @@ function populateCategories() {
     var request = new XMLHttpRequest();
     request.open("GET", "https://api.icndb.com/categories");
     request.onreadystatechange = function () {
+        //Request finished   (4) successfully    (200)
         if (this.readyState == 4 && this.status == 200) {
             var categories = JSON.parse(this.responseText).value;
             console.log(categories);
+            populateCatDropdown(categories);
         }
     };
     request.send();
+}
+function populateCatDropdown(categories) {
+    var dropDown = document.getElementById("cat-list");
+    for (var i = 0; i < categories.length; i++) {
+        var currOption = document.createElement("option");
+        currOption.text = categories[i];
+        dropDown.appendChild(currOption);
+    }
 }
